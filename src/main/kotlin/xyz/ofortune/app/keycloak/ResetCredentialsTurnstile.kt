@@ -46,6 +46,7 @@ class ResetCredentialsTurnstile : ResetCredentialChooseUser() {
 
         val config = Turnstile.readConfig(context.authenticatorConfig.config, DEFAULT_ACTION)
         if (config == null) {
+            Turnstile.prepareForm(context.form(), config, lang)
             context.failureChallenge(
                 AuthenticationFlowError.INVALID_CREDENTIALS,
                 challenge(context, Turnstile.MSG_CAPTCHA_NOT_CONFIGURED)
@@ -63,9 +64,8 @@ class ResetCredentialsTurnstile : ResetCredentialChooseUser() {
         ) {
 
             val lang = context.session.context.resolveLocale(context.user).toLanguageTag()
-            Turnstile.prepareForm(context.form(), config, lang)
-
             formData.remove(Turnstile.CF_TURNSTILE_RESPONSE)
+            Turnstile.prepareForm(context.form(), config, lang)
             context.failureChallenge(
                 AuthenticationFlowError.INVALID_CREDENTIALS,
                 challenge(context, Turnstile.MSG_CAPTCHA_FAILED)
