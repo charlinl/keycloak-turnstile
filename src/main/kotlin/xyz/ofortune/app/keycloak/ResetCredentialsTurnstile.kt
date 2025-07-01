@@ -45,6 +45,7 @@ class ResetCredentialsTurnstile : ResetCredentialChooseUser() {
         context.event.detail("auth_method", "reset_credentials_turnstile")
 
         val config = Turnstile.readConfig(context.authenticatorConfig.config, DEFAULT_ACTION)
+        val lang = context.session.context.resolveLocale(context.user).toLanguageTag()
         if (config == null) {
             Turnstile.prepareForm(context.form(), config, lang)
             context.failureChallenge(
@@ -62,8 +63,6 @@ class ResetCredentialsTurnstile : ResetCredentialChooseUser() {
                 context.session.getProvider(HttpClientProvider::class.java).httpClient
             )
         ) {
-
-            val lang = context.session.context.resolveLocale(context.user).toLanguageTag()
             formData.remove(Turnstile.CF_TURNSTILE_RESPONSE)
             Turnstile.prepareForm(context.form(), config, lang)
             context.failureChallenge(
