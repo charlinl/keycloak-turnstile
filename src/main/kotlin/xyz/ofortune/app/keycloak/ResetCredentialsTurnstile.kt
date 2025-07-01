@@ -72,6 +72,8 @@ class ResetCredentialsTurnstile : ResetCredentialChooseUser() {
 
             return
         }
+        val form = context.form()
+        Turnstile.prepareForm(form, config, lang)
 
         super.action(context)
     }
